@@ -12,15 +12,28 @@ public class Duke {
         Scanner input = new Scanner(System.in);
         String myString = new String();
         System.out.println("______________________________");
-        System.out.println("Hello! I'm Duke\n" + "What can I do for you?\n");
+        System.out.println("Hello! I'm Duke\n" + "What can I do for you?");
         System.out.println("______________________________");
         myString = input.nextLine();
+        ArrayList<String> list = new ArrayList<String>();
 
         while (!myString.equals("bye"))
         {
-            System.out.println("______________________________");
-            System.out.println(myString);
-            System.out.println("______________________________");
+            if (myString.equals("list") && list.size() > 0)
+            {
+                System.out.println("______________________________");
+                for (int i = 0; i < list.size(); i++)
+                {
+                    System.out.println((i+1) + ". " + list.get(i));
+                }
+                System.out.println("______________________________");
+            }
+            else {
+                System.out.println("______________________________");
+                System.out.println("added: " + myString);
+                System.out.println("______________________________");
+                list.add(myString);
+            }
             myString = input.nextLine();
         }
         if (myString.equals("bye"))
