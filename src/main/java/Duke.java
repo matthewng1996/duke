@@ -17,19 +17,18 @@ public class Duke {
         System.out.println("______________________________");
         myString = input.nextLine();
 
-        ArrayList<String> list = new ArrayList<String>();
         ArrayList<Task> taskList = new ArrayList<Task>();
 
         while (!myString.equals("bye"))
         {
-            if (myString.equals("list") && list.size() > 0)
+            if (myString.equals("list") && taskList.size() > 0)
             {
                 System.out.println("______________________________");
                 System.out.println("Here are the tasks in your list:");
-                for (int i = 0; i < list.size(); i++)
+                for (int i = 0; i < taskList.size(); i++)
                 {
                     Task task = taskList.get(i);
-                    System.out.println((i+1) + "." + "[" + task.getStatusIcon() +"] " + list.get(i));
+                    System.out.println((i+1) + "." + taskList.get(i));
                 }
                 System.out.println("______________________________");
             }
@@ -45,14 +44,60 @@ public class Duke {
                 System.out.println("[" + task.getStatusIcon() + "] " + task.description);
                 System.out.println("______________________________");
             }
-            else {
-                    System.out.println("______________________________");
-                    System.out.println("added: " + myString);
-                    System.out.println("______________________________");
-                    list.add(myString);
-                    Task newTask = new Task(myString);
-                    taskList.add(newTask);
+            else if (myString.contains("todo")){
+                String secondWord = myString.substring(myString.indexOf(" "));
+
+                Task newTask = new Todo(myString, secondWord);
+                taskList.add(newTask);
+
+                System.out.println("______________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask.toString());
+                if (taskList.size() == 1)
+                    System.out.println("Now you have " + taskList.size() + " task in the list.");
+                else
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                System.out.println("______________________________");
             }
+            else if (myString.contains("deadline")){
+                String keyStroke = "/";
+                int index = myString.indexOf(keyStroke);
+                String task = myString.substring(myString.indexOf(" "), index);
+                String date = myString.substring(index + 3, myString.length());
+                Task newTask = new Deadline(task, date);
+                System.out.println("______________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask.toString());
+                taskList.add(newTask);
+                if (taskList.size() == 1)
+                    System.out.println("Now you have " + taskList.size() + " task in the list.");
+                else
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                System.out.println("______________________________");
+            }
+            else if (myString.contains("event")) {
+                String keyStroke = "/";
+                int index = myString.indexOf(keyStroke);
+                String task = myString.substring(myString.indexOf(" "), index);
+                String date = myString.substring(index + 3, myString.length());
+                Task newTask = new Event(task, date);
+                System.out.println("______________________________");
+                System.out.println("Got it. I've added this task:");
+                System.out.println(newTask.toString());
+                taskList.add(newTask);
+                if (taskList.size() == 1)
+                    System.out.println("Now you have " + taskList.size() + " task in the list.");
+                else
+                    System.out.println("Now you have " + taskList.size() + " tasks in the list.");
+                System.out.println("______________________________");
+            }
+            else
+            {
+                System.out.println("______________________________");
+                System.out.println("No such command");
+                System.out.println("______________________________");
+            }
+
             myString = input.nextLine();
         }
 
