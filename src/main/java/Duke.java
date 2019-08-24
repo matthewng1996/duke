@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -15,9 +16,11 @@ public class Duke {
         System.out.println("______________________________");
         System.out.println("Hello! I'm Duke\n" + "What can I do for you?");
         System.out.println("______________________________");
+
         myString = input.nextLine();
 
         ArrayList<Task> taskList = new ArrayList<Task>();
+        LoadData(taskList);
 
         while (!myString.equals("bye"))
         {
@@ -79,6 +82,7 @@ public class Duke {
 
         if (myString.equals("bye"))
         {
+            SaveData(taskList);
             System.out.println("______________________________");
             System.out.println("Bye. Hope to see you again soon!");
             System.out.println("______________________________");
@@ -209,6 +213,47 @@ public class Duke {
             else
                 System.out.println("Now you have " + taskList.size() + " tasks in the list.");
             System.out.println("______________________________");
+        }
+    }
+
+    public static void LoadData(ArrayList<Task> taskList)
+    {
+        try {
+            FileInputStream input = new FileInputStream("duke.txt");
+
+            ObjectInputStream load = new ObjectInputStream(input);
+
+            taskList.add((Task)load.readObject());
+
+            load.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void SaveData(ArrayList<Task> taskList)
+    {
+        try {
+            //Open file
+            FileOutputStream saveFile = new FileOutputStream("duke.txt");
+
+            //Objects into save file
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+
+            //Saving the taskList
+            for (Task task : taskList)
+                save.writeObject(task);
+
+            save.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
