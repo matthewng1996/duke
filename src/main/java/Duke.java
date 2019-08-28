@@ -27,15 +27,23 @@ public class Duke {
 
         while (!myString.equals("bye"))
         {
-            if (myString.equals("list") && taskList.size() > 0)
+            if (myString.equals("list"))
             {
-                try {
-                    doList(taskList);
-                } catch (DukeException e) {
+                if (taskList.size() > 0) {
+                    try {
+                        doList(taskList);
+                    } catch (DukeException e) {
+                        System.out.println("______________________________");
+                        System.out.println(e);
+                        System.out.println("______________________________");
+                    }
+                }
+                else {
                     System.out.println("______________________________");
-                    System.out.println(e);
+                    System.out.println("List is empty!");
                     System.out.println("______________________________");
                 }
+
             }
             else if (myString.indexOf("done") == 0) {
                try {
@@ -73,6 +81,14 @@ public class Duke {
                     System.out.println("______________________________");
                     System.out.println(e);
                     System.out.println("______________________________");
+                }
+            }
+            else if (myString.indexOf("delete") == 0)
+            {
+                try {
+                    deleteTask(myString, taskList);
+                } catch (DukeException e) {
+                    System.out.println(e);
                 }
             }
             else
@@ -126,6 +142,27 @@ public class Duke {
             System.out.println("______________________________");
             System.out.println("Nice! I've marked this task as done:");
             System.out.println("[" + task.getStatusIcon() + "] " + task.description);
+            System.out.println("______________________________");
+        }
+    }
+
+    public static void deleteTask(String myString, ArrayList<Task> taskList) throws DukeException{
+        if (myString.indexOf(" ") == -1)
+        {
+            throw new DukeException("☹ OOPS!!! Delete command needs a relevant number");
+        }
+        else
+        {
+            String secondWord = myString.substring(myString.indexOf(" "));
+            secondWord = secondWord.replaceAll("\\s", "");
+            int taskIndex = Integer.parseInt(secondWord);
+
+            Task task = taskList.get(taskIndex - 1);
+
+            taskList.remove(taskIndex - 1);
+            System.out.println("______________________________");
+            System.out.println("Noted. I've removed this task:");
+            System.out.println(task.toString());
             System.out.println("______________________________");
         }
     }
