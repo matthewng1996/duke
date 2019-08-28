@@ -37,7 +37,7 @@ public class Duke {
                     System.out.println("______________________________");
                 }
             }
-            else if (myString.contains("done")) {
+            else if (myString.indexOf("done") == 0) {
                try {
                    doneTask(myString, taskList);
                } catch (DukeException e) {
@@ -46,7 +46,7 @@ public class Duke {
                    System.out.println("______________________________");
                }
             }
-            else if (myString.contains("todo")){
+            else if (myString.indexOf("todo") == 0){
                 try {
                     todo(myString, taskList);
                 } catch (DukeException e) {
@@ -55,7 +55,7 @@ public class Duke {
                     System.out.println("______________________________");
                 }
             }
-            else if (myString.contains("deadline")){
+            else if (myString.indexOf("deadline") == 0){
                 try {
                     deadline(myString, taskList);
                 } catch (DukeException e) {
@@ -66,7 +66,7 @@ public class Duke {
                     e.printStackTrace();
                 }
             }
-            else if (myString.contains("event")) {
+            else if (myString.indexOf("event") == 0) {
                 try {
                     event(myString, taskList);
                 } catch (DukeException | ParseException e) {
