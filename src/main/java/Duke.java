@@ -75,6 +75,16 @@ public class Duke {
                     System.out.println("______________________________");
                 }
             }
+            else if (myString.indexOf("find") == 0)
+            {
+                String secondWord = myString.substring(myString.indexOf(" "));
+
+                try {
+                    findKeywords(secondWord, taskList);
+                } catch (DukeException e) {
+                    System.out.println(e);
+                }
+            }
             else
             {
                 System.out.println("______________________________");
@@ -253,6 +263,29 @@ public class Duke {
                 System.out.println("Now you have " + taskList.size() + " tasks in the list.");
             System.out.println("______________________________");
         }
+    }
+
+    public static void findKeywords(String keyword, ArrayList<Task> taskList) throws DukeException
+    {
+        String temp = keyword;
+        temp = temp.replaceAll(" ", "");
+
+        if (temp.isEmpty())
+            throw new DukeException("Empty search");
+
+        ArrayList<Task> keywordList = new ArrayList<Task>();
+
+        for (int i = 0; i < taskList.size(); i++)
+        {
+            if (taskList.get(i).description.contains(keyword))
+                keywordList.add(taskList.get(i));
+        }
+
+        System.out.println("______________________________");
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < keywordList.size(); i++)
+            System.out.println(keywordList.get(i).toString());
+        System.out.println("______________________________");
     }
 
     public static void LoadData(ArrayList<Task> taskList)
