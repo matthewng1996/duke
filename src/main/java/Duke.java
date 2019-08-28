@@ -83,19 +83,21 @@ public class Duke {
                     System.out.println("______________________________");
                 }
             }
-<<<<<<< HEAD
-            else if (myString.indexOf("delete") == 0)
-            {
+
+            else if (myString.indexOf("delete") == 0) {
                 try {
                     deleteTask(myString, taskList);
-=======
+                } catch (DukeException e) {
+                    e.printStackTrace();
+                }
+            }
             else if (myString.indexOf("find") == 0)
             {
                 String secondWord = myString.substring(myString.indexOf(" "));
 
                 try {
                     findKeywords(secondWord, taskList);
->>>>>>> branch-Level-9
+
                 } catch (DukeException e) {
                     System.out.println(e);
                 }
