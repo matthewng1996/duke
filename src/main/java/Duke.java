@@ -1,3 +1,5 @@
+import com.sun.org.apache.bcel.internal.generic.FSTORE;
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,7 +8,26 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Duke {
+
+    private Storage storage;
+    private TaskList taskList;
+
     public static void main(String[] args) {
+        new Duke("duke.txt").run();
+    }
+
+    public Duke(String filePath)
+    {
+        storage = new Storage();
+        try {
+            taskList = new TaskList(storage.LoadData(filePath));
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void run()
+    {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -22,16 +43,13 @@ public class Duke {
 
         myString = input.nextLine();
 
-        ArrayList<Task> taskList = new ArrayList<Task>();
-        LoadData(taskList);
-
         while (!myString.equals("bye"))
         {
             if (myString.equals("list"))
             {
-                if (taskList.size() > 0) {
+                if (taskList.taskArrayList.size() > 0) {
                     try {
-                        doList(taskList);
+                        doList(taskList.taskArrayList);
                     } catch (DukeException e) {
                         System.out.println("______________________________");
                         System.out.println(e);
@@ -46,17 +64,17 @@ public class Duke {
 
             }
             else if (myString.indexOf("done") == 0) {
-               try {
-                   doneTask(myString, taskList);
-               } catch (DukeException e) {
-                   System.out.println("______________________________");
-                   System.out.println(e);
-                   System.out.println("______________________________");
-               }
+                try {
+                    doneTask(myString, taskList.taskArrayList);
+                } catch (DukeException e) {
+                    System.out.println("______________________________");
+                    System.out.println(e);
+                    System.out.println("______________________________");
+                }
             }
             else if (myString.indexOf("todo") == 0){
                 try {
-                    todo(myString, taskList);
+                    todo(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
                     System.out.println("______________________________");
                     System.out.println(e);
@@ -65,7 +83,7 @@ public class Duke {
             }
             else if (myString.indexOf("deadline") == 0){
                 try {
-                    deadline(myString, taskList);
+                    deadline(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
                     System.out.println("______________________________");
                     System.out.println(e);
@@ -76,7 +94,7 @@ public class Duke {
             }
             else if (myString.indexOf("event") == 0) {
                 try {
-                    event(myString, taskList);
+                    event(myString, taskList.taskArrayList);
                 } catch (DukeException | ParseException e) {
                     System.out.println("______________________________");
                     System.out.println(e);
@@ -86,7 +104,7 @@ public class Duke {
 
             else if (myString.indexOf("delete") == 0) {
                 try {
-                    deleteTask(myString, taskList);
+                    deleteTask(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
                     e.printStackTrace();
                 }
@@ -96,7 +114,7 @@ public class Duke {
                 String secondWord = myString.substring(myString.indexOf(" "));
 
                 try {
-                    findKeywords(secondWord, taskList);
+                    findKeywords(secondWord, taskList.taskArrayList);
 
                 } catch (DukeException e) {
                     System.out.println(e);
@@ -114,7 +132,7 @@ public class Duke {
 
         if (myString.equals("bye"))
         {
-            SaveData(taskList);
+            storage.SaveData(taskList.taskArrayList);
             System.out.println("______________________________");
             System.out.println("Bye. Hope to see you again soon!");
             System.out.println("______________________________");
@@ -322,48 +340,7 @@ public class Duke {
         System.out.println("______________________________");
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < keywordList.size(); i++)
-            System.out.println(keywordList.get(i).toString());
+            System.out.println(i+1+ ". " + keywordList.get(i).toString());
         System.out.println("______________________________");
-    }
-
-    public static void LoadData(ArrayList<Task> taskList)
-    {
-        try {
-            FileInputStream input = new FileInputStream("duke.txt");
-
-            ObjectInputStream load = new ObjectInputStream(input);
-
-            taskList.add((Task)load.readObject());
-
-            load.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void SaveData(ArrayList<Task> taskList)
-    {
-        try {
-            //Open file
-            FileOutputStream saveFile = new FileOutputStream("duke.txt");
-
-            //Objects into save file
-            ObjectOutputStream save = new ObjectOutputStream(saveFile);
-
-            //Saving the taskList
-            for (Task task : taskList)
-                save.writeObject(task);
-
-            save.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
