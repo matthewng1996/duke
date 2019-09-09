@@ -1,8 +1,8 @@
-import javafx.application.Application;
+/*import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
+*/
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,19 +13,23 @@ import java.util.ArrayList;
 public class Duke { //extends Application {
 
     private Storage storage;
-    private TaskList taskList;
+    public TaskList taskList;
+
+    /**
+     * Main class for this application.
+     */
 
     public static void main(String[] args) {
         new Duke("duke.txt").run();
     }
 
-    public Duke(String filePath)
-    {
+    public Duke(String filePath) {
         storage = new Storage();
         try {
             taskList = new TaskList(storage.LoadData(filePath));
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            taskList = new TaskList();
         }
     }
 
@@ -38,8 +42,10 @@ public class Duke { //extends Application {
         stage.show(); // Render the stage.
     }*/
 
-    public void run()
-    {
+    /**
+     * This class is the main function - Heart of Duke
+     */
+    public void run() {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
                 + "| | | | | | | |/ / _ \\\n"
@@ -55,10 +61,8 @@ public class Duke { //extends Application {
 
         myString = input.nextLine();
 
-        while (!myString.equals("bye"))
-        {
-            if (myString.equals("list"))
-            {
+        while (!myString.equals("bye")) {
+            if (myString.equals("list")) {
                 if (taskList.taskArrayList.size() > 0) {
                     try {
                         doList(taskList.taskArrayList);
@@ -67,15 +71,13 @@ public class Duke { //extends Application {
                         System.out.println(e);
                         System.out.println("______________________________");
                     }
-                }
-                else {
+                } else {
                     System.out.println("______________________________");
                     System.out.println("List is empty!");
                     System.out.println("______________________________");
                 }
 
-            }
-            else if (myString.indexOf("done") == 0) {
+            } else if (myString.indexOf("done") == 0) {
                 try {
                     doneTask(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
@@ -83,8 +85,7 @@ public class Duke { //extends Application {
                     System.out.println(e);
                     System.out.println("______________________________");
                 }
-            }
-            else if (myString.indexOf("todo") == 0){
+            } else if (myString.indexOf("todo") == 0) {
                 try {
                     todo(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
@@ -92,8 +93,7 @@ public class Duke { //extends Application {
                     System.out.println(e);
                     System.out.println("______________________________");
                 }
-            }
-            else if (myString.indexOf("deadline") == 0){
+            } else if (myString.indexOf("deadline") == 0) {
                 try {
                     deadline(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
@@ -103,8 +103,7 @@ public class Duke { //extends Application {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (myString.indexOf("event") == 0) {
+            } else if (myString.indexOf("event") == 0) {
                 try {
                     event(myString, taskList.taskArrayList);
                 } catch (DukeException | ParseException e) {
@@ -112,17 +111,13 @@ public class Duke { //extends Application {
                     System.out.println(e);
                     System.out.println("______________________________");
                 }
-            }
-
-            else if (myString.indexOf("delete") == 0) {
+            } else if (myString.indexOf("delete") == 0) {
                 try {
                     deleteTask(myString, taskList.taskArrayList);
                 } catch (DukeException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (myString.indexOf("find") == 0)
-            {
+            } else if (myString.indexOf("find") == 0) {
                 String secondWord = myString.substring(myString.indexOf(" "));
 
                 try {
@@ -131,9 +126,7 @@ public class Duke { //extends Application {
                 } catch (DukeException e) {
                     System.out.println(e);
                 }
-            }
-            else
-            {
+            } else {
                 System.out.println("______________________________");
                 System.out.println("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
                 System.out.println("______________________________");
@@ -142,8 +135,7 @@ public class Duke { //extends Application {
             myString = input.nextLine();
         }
 
-        if (myString.equals("bye"))
-        {
+        if (myString.equals("bye")) {
             storage.SaveData(taskList.taskArrayList);
             System.out.println("______________________________");
             System.out.println("Bye. Hope to see you again soon!");
@@ -151,6 +143,11 @@ public class Duke { //extends Application {
             System.exit(0);
         }
     }
+
+    /**
+     * @param taskList current list of all task
+     * @throws DukeException Creates an exception if the list is currently empty and user still request for a list
+     */
 
     public static void doList(ArrayList<Task> taskList) throws DukeException {
         System.out.println("______________________________");
@@ -167,12 +164,16 @@ public class Duke { //extends Application {
         System.out.println("______________________________");
     }
 
-    public static void doneTask(String myString, ArrayList<Task> taskList) throws DukeException{
-        if (myString.indexOf(" ") == -1)
-        {
+    /**
+     * @param myString user input string
+     * @param taskList current list of task
+     * @throws DukeException user input string does not specify the task completed
+     */
+
+    public static void doneTask(String myString, ArrayList<Task> taskList) throws DukeException {
+        if (myString.indexOf(" ") == -1) {
             throw new DukeException("☹ OOPS!!! Done command needs a relevant number");
-        }
-        else {
+        } else {
             String secondWord = myString.substring(myString.indexOf(" "));
             secondWord = secondWord.replaceAll("\\s", "");
             int taskIndex = Integer.parseInt(secondWord);
@@ -187,13 +188,16 @@ public class Duke { //extends Application {
         }
     }
 
-    public static void deleteTask(String myString, ArrayList<Task> taskList) throws DukeException{
-        if (myString.indexOf(" ") == -1)
-        {
+    /**
+     * @param myString user input string
+     * @param taskList current list of tasks
+     * @throws DukeException If user fails to specify task to delete
+     */
+
+    public static void deleteTask(String myString, ArrayList<Task> taskList) throws DukeException {
+        if (myString.indexOf(" ") == -1) {
             throw new DukeException("☹ OOPS!!! Delete command needs a relevant number");
-        }
-        else
-        {
+        } else {
             String secondWord = myString.substring(myString.indexOf(" "));
             secondWord = secondWord.replaceAll("\\s", "");
             int taskIndex = Integer.parseInt(secondWord);
@@ -208,13 +212,17 @@ public class Duke { //extends Application {
         }
     }
 
-    public static void todo(String myString, ArrayList<Task> taskList) throws DukeException{
+    /**
+     * @param myString user input string
+     * @param taskList current list of tasks
+     * @throws DukeException if user does not specify task that needs to be done
+     */
 
-        if (myString.indexOf(" ") == -1)
-        {
+    public static void todo(String myString, ArrayList<Task> taskList) throws DukeException {
+
+        if (myString.indexOf(" ") == -1) {
             throw new DukeException("☹ OOPS!!! The description of todo cannot be empty.");
-        }
-        else {
+        } else {
             String secondWord = myString.substring(myString.indexOf(" ") + 1);
 
             if (secondWord.isEmpty())
@@ -222,7 +230,6 @@ public class Duke { //extends Application {
 
             Task newTask = new Todo(myString, secondWord);
             taskList.add(newTask);
-
             System.out.println("______________________________");
             System.out.println("Got it. I've added this task:");
             System.out.println(newTask.toString());
@@ -234,7 +241,14 @@ public class Duke { //extends Application {
         }
     }
 
-    public static void deadline (String myString, ArrayList<Task> taskList) throws DukeException, ParseException {
+    /**
+     * @param myString user input string
+     * @param taskList current list of task
+     * @throws DukeException  if task is empty even with specified deadline
+     * @throws ParseException if format of date/time is wrong
+     */
+
+    public static void deadline(String myString, ArrayList<Task> taskList) throws DukeException, ParseException {
         String keyStroke = "/";
         String description = myString.substring(myString.indexOf(" ") + 1, myString.indexOf(keyStroke));
         description = description.replaceAll(" ", "");
@@ -284,7 +298,14 @@ public class Duke { //extends Application {
         }
     }
 
-    public static void event (String myString, ArrayList<Task> taskList) throws DukeException, ParseException {
+    /**
+     * @param myString user input string
+     * @param taskList current list of tasks
+     * @throws DukeException  If user did not give task description
+     * @throws ParseException If user's specified event date/time is in an incorrect format
+     */
+
+    public static void event(String myString, ArrayList<Task> taskList) throws DukeException, ParseException {
         String keyStroke = "/";
         int index = myString.indexOf(keyStroke);
         String description = myString.substring(myString.indexOf(" ") + 1, index);
@@ -333,8 +354,13 @@ public class Duke { //extends Application {
         }
     }
 
-    public static void findKeywords(String keyword, ArrayList<Task> taskList) throws DukeException
-    {
+    /**
+     * @param keyword  user specified keyword for searching
+     * @param taskList current list of task
+     * @throws DukeException If user has an empty keyword
+     */
+
+    public static void findKeywords(String keyword, ArrayList<Task> taskList) throws DukeException {
         String temp = keyword;
         temp = temp.replaceAll(" ", "");
 
@@ -343,8 +369,7 @@ public class Duke { //extends Application {
 
         ArrayList<Task> keywordList = new ArrayList<Task>();
 
-        for (int i = 0; i < taskList.size(); i++)
-        {
+        for (int i = 0; i < taskList.size(); i++) {
             if (taskList.get(i).description.contains(keyword))
                 keywordList.add(taskList.get(i));
         }
@@ -352,7 +377,54 @@ public class Duke { //extends Application {
         System.out.println("______________________________");
         System.out.println("Here are the matching tasks in your list:");
         for (int i = 0; i < keywordList.size(); i++)
-            System.out.println(i+1+ ". " + keywordList.get(i).toString());
+            System.out.println(i + 1 + ". " + keywordList.get(i).toString());
         System.out.println("______________________________");
+    }
+
+    /**
+     * @param taskList current list of task
+     */
+
+    public static void LoadData(ArrayList<Task> taskList) {
+        try {
+            FileInputStream input = new FileInputStream("duke.txt");
+
+            ObjectInputStream load = new ObjectInputStream(input);
+
+            taskList.add((Task) load.readObject());
+
+            load.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param taskList
+     */
+
+    public static void SaveData(ArrayList<Task> taskList) {
+        try {
+            //Open file
+            FileOutputStream saveFile = new FileOutputStream("duke.txt");
+
+            //Objects into save file
+            ObjectOutputStream save = new ObjectOutputStream(saveFile);
+
+            //Saving the taskList
+            for (Task task : taskList)
+                save.writeObject(task);
+
+            save.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

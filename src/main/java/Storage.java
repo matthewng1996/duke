@@ -1,8 +1,15 @@
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Storage class
+ */
 public class Storage {
 
+    /**
+     *
+     * @param taskList current list of task
+     */
     public void SaveData(ArrayList<Task> taskList)
     {
         try {
@@ -25,6 +32,12 @@ public class Storage {
         }
     }
 
+    /**
+     * @param filePath path of save/load file
+     * @return return object
+     * @throws IOException IOException
+     * @throws ClassNotFoundException file not found
+     */
     public ObjectInputStream LoadData(String filePath) throws IOException, ClassNotFoundException {
         FileInputStream input = new FileInputStream(filePath);
         ObjectInputStream load = new ObjectInputStream(input);

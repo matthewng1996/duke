@@ -9,3 +9,13 @@ ______________________________
 Hello! I'm Duke
 What can I do for you?
 ______________________________
+
+______________________________
+Got it. I've added this task:
+[T][?]this
+Now you have 1 task in the list.
+______________________________
+______________________________
+Here are the tasks in your list:
+1.[T][?]this
+______________________________
