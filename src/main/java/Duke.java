@@ -5,7 +5,12 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.ArrayList;
 
+/**
+ * Main class for this application.
+ */
+
 public class Duke {
+
     public static void main(String[] args) {
         String logo = " ____        _        \n"
                 + "|  _ \\ _   _| | _____ \n"
@@ -122,6 +127,12 @@ public class Duke {
         }
     }
 
+    /**
+     *
+     * @param taskList current list of all task
+     * @throws DukeException Creates an exception if the list is currently empty and user still request for a list
+     */
+
     public static void doList(ArrayList<Task> taskList) throws DukeException {
         System.out.println("______________________________");
         System.out.println("Here are the tasks in your list:");
@@ -136,6 +147,13 @@ public class Duke {
         }
         System.out.println("______________________________");
     }
+
+    /**
+     *
+     * @param myString user input string
+     * @param taskList current list of task
+     * @throws DukeException user input string does not specify the task completed
+     */
 
     public static void doneTask(String myString, ArrayList<Task> taskList) throws DukeException{
         if (myString.indexOf(" ") == -1)
@@ -157,6 +175,13 @@ public class Duke {
         }
     }
 
+    /**
+     *
+     * @param myString user input string
+     * @param taskList current list of tasks
+     * @throws DukeException If user fails to specify task to delete
+     */
+
     public static void deleteTask(String myString, ArrayList<Task> taskList) throws DukeException{
         if (myString.indexOf(" ") == -1)
         {
@@ -177,6 +202,13 @@ public class Duke {
             System.out.println("______________________________");
         }
     }
+
+    /**
+     *
+     * @param myString user input string
+     * @param taskList current list of tasks
+     * @throws DukeException if user does not specify task that needs to be done
+     */
 
     public static void todo(String myString, ArrayList<Task> taskList) throws DukeException{
 
@@ -203,6 +235,14 @@ public class Duke {
             System.out.println("______________________________");
         }
     }
+
+    /**
+     *
+     * @param myString user input string
+     * @param taskList current list of task
+     * @throws DukeException if task is empty even with specified deadline
+     * @throws ParseException if format of date/time is wrong
+     */
 
     public static void deadline (String myString, ArrayList<Task> taskList) throws DukeException, ParseException {
         String keyStroke = "/";
@@ -254,6 +294,14 @@ public class Duke {
         }
     }
 
+    /**
+     *
+     * @param myString user input string
+     * @param taskList current list of tasks
+     * @throws DukeException If user did not give task description
+     * @throws ParseException If user's specified event date/time is in an incorrect format
+     */
+
     public static void event (String myString, ArrayList<Task> taskList) throws DukeException, ParseException {
         String keyStroke = "/";
         int index = myString.indexOf(keyStroke);
@@ -303,6 +351,13 @@ public class Duke {
         }
     }
 
+    /**
+     *
+     * @param keyword user specified keyword for searching
+     * @param taskList current list of task
+     * @throws DukeException If user has an empty keyword
+     */
+
     public static void findKeywords(String keyword, ArrayList<Task> taskList) throws DukeException
     {
         String temp = keyword;
@@ -326,6 +381,11 @@ public class Duke {
         System.out.println("______________________________");
     }
 
+    /**
+     *
+     * @param taskList current list of task
+     */
+
     public static void LoadData(ArrayList<Task> taskList)
     {
         try {
@@ -345,6 +405,11 @@ public class Duke {
             e.printStackTrace();
         }
     }
+
+    /**
+     *
+     * @param taskList
+     */
 
     public static void SaveData(ArrayList<Task> taskList)
     {
